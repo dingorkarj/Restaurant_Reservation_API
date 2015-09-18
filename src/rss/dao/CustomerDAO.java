@@ -72,6 +72,7 @@ public class CustomerDAO {
 				cust.setAddress(rs.getString("address"));
 				cust.setPhone(rs.getString("phone"));
 				cust.setEmail(rs.getString("email"));
+				cust.setPassword(rs.getString("password"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

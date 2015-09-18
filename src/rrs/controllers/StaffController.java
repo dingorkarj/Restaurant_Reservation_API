@@ -20,11 +20,37 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import rrs.exception.AppException;
 import rrs.model.Reservation;
+import rrs.model.Staff;
 import rss.dao.ReservationDAO;
+import rss.dao.StaffDAO;
 
 @Path("/staff")
 @Api(tags = { "staff" })
 public class StaffController {
+
+	@GET
+	@Path("/{sid}")
+	@ApiOperation(value = "Find A Staff", notes = "Find a staff by id in the database")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@Produces(MediaType.APPLICATION_JSON)
+	public Staff getAStaff(@PathParam("sid") int sid) {
+		Staff s = null;
+
+		StaffDAO sdao = new StaffDAO();
+		try {
+			s = sdao.getAStaff(sid);
+			if (s == null) {
+				throw new WebApplicationException(Status.NOT_FOUND);
+			}
+
+		} catch (AppException e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+		}
+
+		return s;
+	}
 
 	@GET
 	@Path("/reservations")

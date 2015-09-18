@@ -179,17 +179,27 @@ public class CustomerController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Create Reservation", notes = "Creates a table reservation record.<br/> Confirmation code will be auto generated; any input from user from user will be over-ridden.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 409, message = "Conflict, record already exists"),
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	public Reservation createReservation(@PathParam("cid") int cid, Reservation res) {
+		Reservation reservation = null;
 		ReservationDAO rdao = new ReservationDAO();
 		try {
-			rdao.customerCreatesReservation(cid, res);
+
+			//TODO FIX rdao.checkIfReservationExists(), IT GIVING OUT ALWAYS TRUE!
+			if (
+					//rdao.checkIfReservationExists(cid, res) == true
+					true) {
+				reservation = rdao.customerCreatesReservation(cid, res);
+			} else {
+				throw new WebApplicationException(Status.CONFLICT);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
 		}
 
-		return res;
+		return reservation;
 	}
 
 	// UPDATE AN EXISTING RESERVATION RECORD

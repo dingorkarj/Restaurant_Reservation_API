@@ -1,0 +1,47 @@
+<h2>Reservation List</h2>
+<hr>
+<div class="container row">
+	<div class="col-md-offset-3 col-md-1">Search by keyword:</div>
+	<div class="col-md-3">
+		<input type="text" data-ng-model="staffGAR_Vm.searchKeyword"
+			class="form-control" placeholder="Search by keyword"></input>
+	</div>
+</div>
+<hr>
+<div class="table-responsive" id="_status_table">
+	<table class="table table-hover table-bordered table-striped">
+		<thead>
+			<tr>
+				<th class="_text_align_center"
+					data-ng-click="staffGAR_Vm.sort.by='rid'; staffGAR_Vm.sort.reverse = !staffGAR_Vm.sort.reverse;">Reservation
+					#</th>
+				<th class="_text_align_center"
+					data-ng-click="staffGAR_Vm.sort.by='tid'; staffGAR_Vm.sort.reverse = !staffGAR_Vm.sort.reverse;">Table
+					#</th>
+				<th class="_text_align_center"
+					data-ng-click="staffGAR_Vm.sort.by='cid'; staffGAR_Vm.sort.reverse = !staffGAR_Vm.sort.reverse;">Customer
+					#</th>
+				<th class="_text_align_center"
+					data-ng-click="staffGAR_Vm.sort.by='name'; staffGAR_Vm.sort.reverse = !staffGAR_Vm.sort.reverse;">Customer
+					Name</th>
+				<th class="_text_align_center"
+					data-ng-click="staffGAR_Vm.sort.by='date'; staffGAR_Vm.sort.reverse = !staffGAR_Vm.sort.reverse;">Date</th>
+				<th class="_text_align_center"></th>
+				<th class="_text_align_center"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+				data-ng-repeat="reservation in staffGAR_Vm.allReservations | filter:staffGAR_Vm.searchKeyword | orderBy:staffGAR_Vm.sort.by:staffGAR_Vm.sort.reverse">
+				<td>{{reservation.rid}}</td>
+				<td>{{reservation.tid}}</td>
+				<td>{{reservation.cid}}</td>
+				<td>{{reservation.fname}} {{reservation.lname}}</td>
+				<td>{{reservation.date}}</td>
+				<td><i class="glyphicon glyphicon-trash"
+					data-ng-click="staffGAR_Vm.deleteReservation(reservation.rid)"></i></td>
+				<td><span class="glyphicon glyphicon-edit" data-ng-click="staffGAR_Vm.editReservation(reservation)"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

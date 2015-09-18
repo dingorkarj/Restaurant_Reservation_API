@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html data-ng-app="flavoursRestaurant">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/mystyle.css">
+<title>Flavours</title>
+</head>
+<body
+	data-ng-controller="StaffGetAllReservationController as staffGAR_Vm">
+	<header data-ng-include="'app/templates/header.template.html'">
+	</header>
+	<content class="container row">
+	<section class="col-md-3">
+		<div data-ng-include="'app/templates/sidemenu.emp.template.html'"></div>
+	</section>
+	<section class="col-md-9">
+		<div data-ng-view></div>
+	</section>
+
+	<content> <!-- SCRIPTS --> <script src="angular.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-resource.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-route.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.6/angular-messages.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-animate.min.js"></script>
+
+	<script type="text/javascript">
+		angular.module('flavoursRestaurant', [ 'ngRoute', 'ngMessages' ]);
+	</script> <script src="app/config/staff.route.config.js"></script> <script
+		src="app/services/table.service.js"></script> <script
+		src="app/services/data.service.js"></script> <script
+		src="app/controllers/staff.get-all-reservations.controller.js"></script>
+	<script src="app/controllers/staff.edit-reservation.controller.js"></script>
+	<script src="app/controllers/staff.customer-list.controller.js"></script>
+	<script src="app/controllers/staff.add-reservation.controller.js"></script>
+</body>
+</html>
