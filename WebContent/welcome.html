@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html data-ng-app="flavoursRestaurant">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/mystyle.css">
+<title>Flavours</title>
+</head>
+
+
+<body data-ng-controller="CustViewAllTablesController as custVAT_Vm">
+	<header data-ng-include="'app/templates/header.template.html'">
+	</header>
+
+	<div class="container row">
+
+		<!-- 	<div class="row"> -->
+		<section class="col-sm-3">
+			<div data-ng-include="'app/templates/sidemenu.template.html'"></div>
+		</section>
+		<section class="col-sm-9">
+			<div data-ng-view></div>
+		</section>
+	</div>
+
+	<!-- SCRIPTS -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- script src="https://code.angularjs.org/1.4.5/angular.min.js"></script-->
+	<script src="angular.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-resource.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-route.min.js"></script>
+	<script src="https://code.angularjs.org/1.4.5/angular-animate.min.js"></script>
+	<script
+		src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.4.js"></script>
+	<script type="text/javascript">
+		angular.module('flavoursRestaurant', [ 'ngRoute', 'ngAnimate',
+				'ui.bootstrap' ]);
+	</script>
+	<script src="app/config/customer.route.config.js"></script>
+	<script src="app/services/table.service.js"></script>
+	<script src="app/controllers/customer.view-all-tables.controller.js"></script>
+	<script src="app/controllers/customer.reserve-table.controller.js"></script>
+	<script
+		src="app/controllers/customer.get-all-reservations.controller.js"></script>
+	<script type="text/ng-template" id="reservationModal1">
+       <div class="modal-header">
+  <h3 class="modal-title">Reserve table</h3>
+</div>
+<div class="modal-body">
+   <div class="row">	
+	<div class="col-md-offset-2 col-md-2">
+  <strong>Date<strong>
+</div>
+  <div class="col-md-6">
+    <p class="input-group">
+      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+      />
+    <span class="input-group-btn">
+     <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+    </p>
+  </div>
+</div>
+</div>
+<div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="openModal2(dt);$dismiss()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$dismiss()">Cancel</button>
+</div>
+</script>
+
+	<script type="text/ng-template" id="reservationModal2">
+		<div class="modal-content">
+                <div class="modal-header">
+                    
+                    <h4 class="modal-title">Reservation Successful</h4>
+                </div>
+                <div class="modal-body _modal_body_height _text_align_center">
+                    Confirmation Code: {{confirmationCode}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="$dismiss()">Close</button>
+
+                </div>
+            </div>
+</script>
+
+	<script type="text/ng-template" id="editReservationModal1">
+	
+		<div class="modal-content">
+                <div class="modal-header">
+                    
+                    <h4 class="modal-title">Edit Reservation</h4>
+                </div>
+				
+                <div class="modal-body _modal_body_height _text_align_center">
+                    Confirmation Code: <input type="text" class="form-control" required data-ng-model="confirmationCode" placeholder="Your confirmation code">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-ng-click="openEditModal2(confirmationCode);$dismiss();">Next</button>
+
+                </div>
+            </div>
+</script>
+
+	<script type="text/ng-template" id="editReservationModal2">
+
+	<div class="modal-content">
+		<div class="modal-header">
+
+			<h4 class="modal-title">Edit Reservation</h4>
+		</div>
+		<div class="modal-body">
+   <div class="row">	
+	<div class="col-md-offset-2 col-md-2">
+  <strong>Date<strong>
+</div>
+  <div class="col-md-6">
+    <p class="input-group">
+      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+      />
+    <span class="input-group-btn">
+     <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+    </p>
+  </div>
+</div>
+</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary"
+				data-ng-click="openEditModal3(dt);$dismiss();">Ok</button>
+
+		</div>
+	</div>
+	</script>
+	<script type="text/ng-template" id="editReservationModal3">
+		<div class="modal-content">
+                <div class="modal-header">
+                    
+                    <h4 class="modal-title">Update Successful</h4>
+                </div>
+                <div class="modal-body _modal_body_height _text_align_center">
+                    Confirmation Code: {{confirmationCode}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="$dismiss()">Close</button>
+
+                </div>
+            </div>
+</script>
+	<script type="text/ng-template" id="deleteReservationModal1">
+		<div class="modal-content">
+                <div class="modal-header">
+                    
+                    <h4 class="modal-title">Delete Reservation</h4>
+                </div>
+                <div class="modal-body _modal_body_height _text_align_center">
+                                        Confirmation Code: <input type="text" class="form-control" required data-ng-model="confirmationCode" placeholder="Your confirmation code">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" ng-click="deleteReservation(rid, confirmationCode);$dismiss()">Yes</button>
+					<button type="button" class="btn btn-warning" ng-click="$dismiss()">No</button>
+                </div>
+            </div>
+</script>
+	<script type="text/ng-template" id="deleteReservationModal2">
+		<div class="modal-content">
+                <div class="modal-header">
+                    
+                    <h4 class="modal-title">Delete Successful</h4>
+                </div>
+                <div class="modal-body _modal_body_height _text_align_center">
+                Your reservation is cancelled.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="$dismiss()">Close</button>
+                </div>
+            </div>
+</script>
+
+</body>
+</html>

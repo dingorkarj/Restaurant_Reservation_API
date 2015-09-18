@@ -11,30 +11,28 @@ import rrs.utils.DBUtils;
 
 public class StaffDAO {
 
-	public Staff login(String username, String password) throws AppException {
+	public Staff getAStaff(int sid) throws AppException {
 		Staff staff = null;
 		Connection conn = DBUtils.startConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			ps = conn.prepareStatement("select * from staff where username = ? and password = ?");
-			ps.setString(1, username);
-			ps.setString(2, password);
+			ps = conn.prepareStatement("select * from staff where sid = " + sid);
 
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				staff = new Staff();
 				staff.setFname(rs.getString("fname"));
 				staff.setLname(rs.getString("lname"));
-				staff.setId(rs.getInt("id"));
-				staff.setUsername(username);
-				
+				staff.setId(rs.getInt("sid"));
+				staff.setUsername(rs.getString("username"));
+				staff.setPassword(rs.getString("password"));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new AppException(e.getMessage(),e.getCause());
+			throw new AppException(e.getMessage(), e.getCause());
 		} finally {
 			DBUtils.closeConnection(conn, ps, rs);
 		}

@@ -1,0 +1,18 @@
+<div class="row">
+	<div class="col-lg-4" data-ng-repeat="table in custVAT_Vm.allTables">
+		<div class="thumbnail">
+			<img data-ng-src="images/table{{table.tableNumber}}.jpg"
+				alt="{{table.tableNumber}}">
+			<div class="caption">
+				
+				<p>
+					<strong>Table Number:</strong> {{table.tableNumber}}
+				</p>
+				<p>
+					<strong>Seating:</strong> {{table.tableSeating}}
+				</p>
+				<button class="btn btn-success btn-sm _acc_btn" data-ng-click="openModal1(table.tableNumber)" >Reserve</button>
+			</div>
+		</div>
+	</div>
+</div>

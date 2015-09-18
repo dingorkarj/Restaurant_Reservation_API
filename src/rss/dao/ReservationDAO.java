@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import rrs.exception.AppException;
@@ -107,6 +108,54 @@ public class ReservationDAO {
 
 	}
 
+	public boolean checkIfReservationExists(int cid, Reservation res) throws AppException {
+		Connection conn = DBUtils.startConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		boolean test = false;
+		try {
+			ps = conn.prepareStatement("select * from reservation where cid=" + cid + " and tid=" + res.getTid());
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				Calendar cal1 = Calendar.getInstance();
+				Calendar cal2 = Calendar.getInstance();
+				cal1.setTime(res.getDate());
+				cal2.setTime(rs.getDate("date"));
+
+				boolean sameDay = (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))
+						&& (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+
+				if (sameDay == false) {
+					System.out.println(res.getDate());
+					System.out.println(rs.getDate("date"));
+					System.out.println("false1");
+					test = false;
+					return test;
+				} else {
+					System.out.println(res.getDate());
+					System.out.println(rs.getDate("date"));
+					System.out.println("true1");
+					test = true;
+					return test;
+				}
+			} else {
+				System.out.println(res.getDate());
+				System.out.println(rs.getDate("date"));
+				System.out.println("true2");
+				test = true;
+				return test;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AppException(e.getMessage(), e.getCause());
+		} finally {
+			DBUtils.closeConnection(conn, ps, rs);
+		}
+
+	}
+
 	public Reservation customerCreatesReservation(int cid, Reservation res) throws AppException {
 		Connection conn = DBUtils.startConnection();
 		PreparedStatement ps = null;
@@ -162,7 +211,7 @@ public class ReservationDAO {
 			// Date format conversion from java.util.Date to java.sql.Date
 			// ps.setDate(2, new java.sql.Date(res.getDate().getTime()));
 			// USE THIS TENTATIVELY
-			ps.setDate(2, null);
+			ps.setDate(2, res.getDate());
 
 			int check = ps.executeUpdate();
 
@@ -255,7 +304,7 @@ public class ReservationDAO {
 			ps.setInt(4, 1); // CAN PROVIDE RAND
 			ps.setInt(1, res.getCid());
 			ps.setInt(2, res.getTid());
-			ps.setDate(3, (Date) res.getDate());
+			ps.setDate(3, (java.sql.Date) res.getDate());
 
 			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
@@ -293,7 +342,7 @@ public class ReservationDAO {
 			// Date format conversion from java.util.Date to java.sql.Date
 			// ps.setDate(2, new java.sql.Date(res.getDate().getTime()));
 			// USE THIS TENTATIVELY
-			ps.setDate(2, null);
+			ps.setDate(2, (Date)res.getDate());
 
 			int check = ps.executeUpdate();
 
